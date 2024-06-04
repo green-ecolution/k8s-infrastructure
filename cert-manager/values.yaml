@@ -1,0 +1,55 @@
+cert-manager:
+  enabled: true
+  namespace: cert-manager
+  fullnameOverride: cert-manager
+  installCRDs: true
+  webhook:
+    fullnameOverride: cert-manager
+    extraArgs:
+      - --logging-format=json
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+
+  cainjector:
+    extraArgs:
+      - --logging-format=json
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+
+  controller:
+    extraArgs:
+      - --logging-format=json
+    extraEnvVarsSecret: cert-manager-env-vars
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    extraVolumes:
+      - name: ca-certs
+        secret:
+          secretName: squid-root-ca
+    extraVolumeMounts:
+      - name: ca-certs
+        readOnly: true
+        mountPath: /etc/ssl/certs/
+
+clusterIssuer:
+  enabled: true
+  ingressClass: traefik
+  acme:
+    email: dev@choffmann.io
+    server: https://acme-v02.api.letsencrypt.org/directory
+
