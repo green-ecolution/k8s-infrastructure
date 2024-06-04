@@ -1,0 +1,17 @@
+argocd:
+  nameOverride: "argocd"
+  fullnameOverride: "argocd"
+
+  global:
+    installCRDs: true
+    domain: argocd.green-ecolution.de
+
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      kubernetes.io/ingress.class: traefik
+    hosts:
+      - host: argocd.green-ecolution.de
+        paths:
+          - /
