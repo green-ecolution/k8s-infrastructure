@@ -12,6 +12,12 @@ spec:
     privateKeySecretRef:
       name: {{ include "common.names.namespace" . }}
     solvers:
+    - dns01:
+        cloudflare:
+          email: {{ .Values.clusterIssuer.acme.email }}
+          apiTokenSecretRef:
+            name: cloudflare-api
+            key: api-token
     - http01:
         ingress:
           class: {{ .Values.clusterIssuer.ingressClass }}

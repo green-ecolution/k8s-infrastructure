@@ -11,6 +11,7 @@ argocd:
       enabled: true
       ingressClassName: traefik
       annotations:
+        cert-manager.io/cluster-issuer: "cert-manager"
         kubernetes.io/ingress.class: traefik
       hosts:
         - host: argocd.green-ecolution.de
