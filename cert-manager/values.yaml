@@ -48,7 +48,7 @@ cert-manager:
 
 clusterIssuer:
   enabled: true
-  ingressClass: traefik
+  ingressClass: traefik-ingress-controller
   acme:
     email: dev@choffmann.io
     server: https://acme-v02.api.letsencrypt.org/directory
