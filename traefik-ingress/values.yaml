@@ -1,1 +1,5 @@
-instanceLabelOverride: traefik
+traefik:
+  ports:
+    web:
+      redirectTo:
+        port: websecure
