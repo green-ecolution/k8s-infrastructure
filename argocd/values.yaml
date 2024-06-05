@@ -6,6 +6,9 @@ argocd:
     installCRDs: true
     domain: argocd.green-ecolution.de
 
+  config:
+    server.insecure: true
+
   server:
     ingress:
       enabled: true
