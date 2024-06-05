@@ -3,6 +3,11 @@ traefik:
     - "--providers.kubernetesingress.ingressendpoint.publishedservice=traefik/traefik-ingress-controller"
     - "--log.level=DEBUG"
 
+  ports:
+    web:
+      redirectTo:
+        port: websecure
+
   logs:
     general:
       level: DEBUG
