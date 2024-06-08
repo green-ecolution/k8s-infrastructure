@@ -1,0 +1,56 @@
+vaultwarden:
+  fullnameOverride: "vaultwarden"
+  domain: "https://vault.green-ecolution.de"
+
+  image:
+    tag: "1.30.5"
+
+  ingress:
+    enabled: true
+    class: "traefik"
+    tlsSecret: vaultwarden-green-ecolution-crt
+    hostname: vault.green-ecolution.de
+    additionalAnnotations:
+      cert-manager.io/cluster-issuer: cert-manager
+      kubernetes.io/ingress.class: traefik
+
+  serviceAccount:
+    create: true
+    name: "vaultwarden-svc"
+
+  data:
+    name: "vaultwarden-data"
+    size: "2Gi"
+    class: "do-block-storage"
+
+  attachments:
+    name: "vaultwarden-files"
+    size: "2Gi"
+    class: "do-block-storage"
+
+  adminToken:
+    existingSecret: vaultwarden-admin-token
+    existingSecretKey: admin-token
+
+  smtp:
+    existingSecret: vaultwarden-smtp
+    host: mail.smtp2go.com
+    port: 2525
+    from: vault@green-ecolution.de
+    fromName: "Vaultwarden (Green Ecolution)"
+    security: "starttls"
+    username: 
+      existingSecretKey: smtp-username
+    password: 
+      existingSecretKey: smtp-password
+
+  pushNotifications:
+    installationId: "dc721c88-119d-49cd-ad7d-b18900d49b06"
+    installationKey: "iDlpPHoRYZhpPZeA0gvH"
+    relayUri: "https://push.bitwarden.com"
+    identityUri: "https://identity.bitwarden.com"
+
+secrets:
+  adminToken: vaultwarden-admin-token
+  smtp: vaultwarden-smtp
+
