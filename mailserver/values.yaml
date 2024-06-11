@@ -1,0 +1,48 @@
+mailu:
+  hostnames:
+    - mail.green-ecolution.de
+
+  domain: green-ecolution.de
+
+  logLevel: INFO
+  secretKey: geheim
+
+  initialAccount:
+    enabled: true
+    domain: mail.green-ecolution.de
+    username: admin@green-ecolution.de
+    password: geheim
+
+  limits:
+    authRatelimit:
+      ip: 100/minute;3600/hour
+      user: 100/day
+
+  messageSizeLimitInMegabytes: 200
+  customization:
+    siteName: Green Ecolution Mail
+    website: https://mail.green-ecolution.de
+    logoUrl: https://green-ecolution.de/tree.png
+
+  postgresql:
+    enabled: true
+    auth:
+      password: geheim
+    primary:
+      persistence:
+        enabled: true
+        class: "do-block-storage"
+        size: "5Gi"
+
+  persistence:
+    enabled: true
+    class: "do-block-storage"
+    size: 10Gi
+
+  ingress:
+    enabled: true
+    ingressClass: "traefik"
+    annotations:
+      cert-manager.io/cluster-issuer: cert-manager
+      kubernetes.io/ingress.class: traefik
+
