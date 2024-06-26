@@ -22,3 +22,58 @@ argocd:
           paths:
             - /
       tls: true
+
+  notifications:
+    enabled: true
+    secret:
+      create: false
+      name: discord-webhook-secret
+    triggers:
+      on-sync-succeeded:
+        enabled: true
+        condition: "app.status.operationState.phase in ['Succeeded']"
+        template: discord-app-sync
+      on-sync-failed:
+        enabled: true
+        condition: "app.status.operationState.phase in ['Failed']"
+        template: discord-app-sync
+      on-deployed:
+        enabled: true
+        condition: "app.status.sync.status in ['Synced'] and app.status.health.status in ['Healthy']"
+        template: discord-app-deployed
+    templates:
+      discord-app-sync:
+        message: |
+          {
+            "embeds": [
+              {
+                "title": "Application {{app.metadata.name}} Sync Status",
+                "description": "Application {{app.metadata.name}} in namespace {{app.metadata.namespace}} has a new sync status: **{{app.status.operationState.phase}}**.",
+                "color": 5814783,
+                "fields": [
+                  {"name": "Project", "value": "{{app.spec.project}}"},
+                  {"name": "Sync Status", "value": "{{app.status.sync.status}}"},
+                  {"name": "Health Status", "value": "{{app.status.health.status}}"},
+                  {"name": "Operation State", "value": "{{app.status.operationState.phase}}"},
+                  {"name": "Sync Revision", "value": "{{app.status.operationState.syncResult.revision}}"}
+                ]
+              }
+            ]
+          }
+      discord-app-deployed:
+        message: |
+          {
+            "embeds": [
+              {
+                "title": "Application {{app.metadata.name}} Deployed",
+                "description": "Application {{app.metadata.name}} in namespace {{app.metadata.namespace}} has been successfully deployed.",
+                "color": 3066993,
+                "fields": [
+                  {"name": "Project", "value": "{{app.spec.project}}"},
+                  {"name": "Sync Status", "value": "{{app.status.sync.status}}"},
+                  {"name": "Health Status", "value": "{{app.status.health.status}}"},
+                  {"name": "Deployed Revision", "value": "{{app.status.operationState.syncResult.revision}}"}
+                ]
+              }
+            ]
+          }
