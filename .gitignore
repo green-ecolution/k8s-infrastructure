@@ -1,1 +1,7 @@
 age.agekey
+
+**/secrets/**
+**/secret/**
+
+!**/secrets/*.enc.yaml
+!**/secrets/*.enc.yaml
