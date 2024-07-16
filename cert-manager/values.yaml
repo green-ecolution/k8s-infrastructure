@@ -35,5 +35,5 @@ clusterIssuer:
   enabled: true
   ingressClass: traefik
   acme:
-    email: dev@choffmann.io
+    email: dev@green-ecolution.de
     server: https://acme-v02.api.letsencrypt.org/directory
