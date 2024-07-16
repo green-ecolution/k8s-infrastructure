@@ -23,57 +23,96 @@ argocd:
             - /
       tls: true
 
-  notifications:
-    enabled: true
-    secret:
-      create: false
-      name: discord-webhook-secret
-    triggers:
-      on-sync-succeeded:
-        enabled: true
-        condition: "app.status.operationState.phase in ['Succeeded']"
-        template: discord-app-sync
-      on-sync-failed:
-        enabled: true
-        condition: "app.status.operationState.phase in ['Failed']"
-        template: discord-app-sync
-      on-deployed:
-        enabled: true
-        condition: "app.status.sync.status in ['Synced'] and app.status.health.status in ['Healthy']"
-        template: discord-app-deployed
-    templates:
-      discord-app-sync:
-        message: |
-          {
-            "embeds": [
-              {
-                "title": "Application {{app.metadata.name}} Sync Status",
-                "description": "Application {{app.metadata.name}} in namespace {{app.metadata.namespace}} has a new sync status: **{{app.status.operationState.phase}}**.",
-                "color": 5814783,
-                "fields": [
-                  {"name": "Project", "value": "{{app.spec.project}}"},
-                  {"name": "Sync Status", "value": "{{app.status.sync.status}}"},
-                  {"name": "Health Status", "value": "{{app.status.health.status}}"},
-                  {"name": "Operation State", "value": "{{app.status.operationState.phase}}"},
-                  {"name": "Sync Revision", "value": "{{app.status.operationState.syncResult.revision}}"}
-                ]
-              }
-            ]
-          }
-      discord-app-deployed:
-        message: |
-          {
-            "embeds": [
-              {
-                "title": "Application {{app.metadata.name}} Deployed",
-                "description": "Application {{app.metadata.name}} in namespace {{app.metadata.namespace}} has been successfully deployed.",
-                "color": 3066993,
-                "fields": [
-                  {"name": "Project", "value": "{{app.spec.project}}"},
-                  {"name": "Sync Status", "value": "{{app.status.sync.status}}"},
-                  {"name": "Health Status", "value": "{{app.status.health.status}}"},
-                  {"name": "Deployed Revision", "value": "{{app.status.operationState.syncResult.revision}}"}
-                ]
-              }
-            ]
-          }
+  repoServer:
+    initContainers:
+      - name: download-tools
+        image: alpine:latest
+        imagePullPolicy: IfNotPresent
+        command: [sh, -ec]
+        env:
+          - name: HELM_SECRETS_VERSION
+            value: "4.6.0"
+          - name: KUBECTL_VERSION
+            value: "1.30.1"
+          - name: VALS_VERSION
+            value: "0.37.1"
+          - name: SOPS_VERSION
+            value: "3.8.1"
+        args:
+          - |
+            mkdir -p /custom-tools/helm-plugins
+            wget -qO- https://github.com/jkroepke/helm-secrets/releases/download/v${HELM_SECRETS_VERSION}/helm-secrets.tar.gz | tar -C /custom-tools/helm-plugins -xzf-;
+
+            wget -qO /custom-tools/curl https://github.com/moparisthebest/static-curl/releases/latest/download/curl-amd64
+            wget -qO /custom-tools/sops https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.amd64
+            wget -qO /custom-tools/kubectl https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+
+            wget -qO- https://github.com/helmfile/vals/releases/download/v${VALS_VERSION}/vals_${VALS_VERSION}_linux_amd64.tar.gz | tar -xzf- -C /custom-tools/ vals;
+
+            cp /custom-tools/helm-plugins/helm-secrets/scripts/wrapper/helm.sh /custom-tools/helm
+
+            chmod +x /custom-tools/*
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
+      - name: install-ksops
+        image: viaductoss/ksops:v4.3.2
+        command: ["/bin/sh", "-c"]
+        args:
+          - echo "Installing KSOPS...";
+            mv ksops /custom-tools/;
+            mv kustomize /custom-tools/;
+            echo "Done.";
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
+    env:
+      - name: XDG_CONFIG_HOME
+        value: /.config
+      - name: SOPS_AGE_KEY_FILE
+        value: /.config/sops/age/keys.txt
+      - name: HELM_PLUGINS
+        value: /custom-tools/helm-plugins/
+      - name: HELM_SECRETS_CURL_PATH
+        value: /custom-tools/curl
+      - name: HELM_SECRETS_SOPS_PATH
+        value: /custom-tools/sops
+      - name: HELM_SECRETS_VALS_PATH
+        value: /custom-tools/vals
+      - name: HELM_SECRETS_KUBECTL_PATH
+        value: /custom-tools/kubectl
+      - name: HELM_SECRETS_BACKEND
+        value: sops
+      # https://github.com/jkroepke/helm-secrets/wiki/Security-in-shared-environments
+      - name: HELM_SECRETS_VALUES_ALLOW_SYMLINKS
+        value: "false"
+      - name: HELM_SECRETS_VALUES_ALLOW_ABSOLUTE_PATH
+        value: "true"
+      - name: HELM_SECRETS_VALUES_ALLOW_PATH_TRAVERSAL
+        value: "false"
+      - name: HELM_SECRETS_WRAPPER_ENABLED
+        value: "true"
+      - name: HELM_SECRETS_DECRYPT_SECRETS_IN_TMP_DIR
+        value: "true"
+      - name: HELM_SECRETS_HELM_PATH
+        value: /usr/local/bin/helm
+    volumeMounts:
+      - mountPath: /custom-tools
+        name: custom-tools
+      - mountPath: /.config/sops/age
+        name: sops-age
+      - mountPath: /usr/local/bin/kustomize
+        name: custom-tools
+        subPath: kustomize
+      - mountPath: /usr/local/bin/ksops
+        name: custom-tools
+        subPath: ksops
+      - mountPath: /usr/local/sbin/helm
+        name: custom-tools
+        subPath: helm
+    volumes:
+      - name: custom-tools
+        emptyDir: {}
+      - name: sops-age
+        secret:
+          secretName: sops-age
