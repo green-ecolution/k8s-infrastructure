@@ -23,6 +23,9 @@ pgadmin:
     storageClass: "do-block-storage"
   ingress:
     enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: cert-manager
+      kubernetes.io/ingress.class: traefik
     hosts:
       - host: pgadmin.green-ecolution.de
         paths:
