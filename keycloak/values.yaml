@@ -1,0 +1,20 @@
+keycloak:
+  nameOverride: "keycloak"
+  fullnameOverride: "keycloak"
+  namespaceOverride: "keycloak"
+
+  ingress:
+    enabled: true
+    ingressClassName: "traefik"
+    hostname: auth.green-ecolution.de
+    tls: true
+
+  postgresql:
+    enabled: true
+    primary:
+      persistence:
+        enabled: true
+        size: 2Gi
+        existingClaim: "pvc-628fc102-4b25-45a5-a70f-caa1013c9a10"
+    auth:
+      database: "keycloak"
