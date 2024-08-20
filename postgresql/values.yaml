@@ -1,0 +1,34 @@
+postgresql:
+  fullnameOverride: postgresql
+  primary:
+    persistence:
+      enabled: true
+      size: 5Gi
+
+pgadmin:
+  fullnameOverride: pgadmin
+  enabled: true
+
+  resources: 
+    limits:
+      cpu: 200m
+      memory: 2Gi
+    requests:
+      cpu: 200m
+      memory: 1Gi
+
+  persistentVolume:
+    enabled: true
+    size: 5Gi
+    storageClass: "do-block-storage"
+  ingress:
+    enabled: true
+    hosts:
+      - host: pgadmin.green-ecolution.de
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: pgadmin-green-ecolution-de-tls
+        hosts:
+          - pgadmin.green-ecolution.de
