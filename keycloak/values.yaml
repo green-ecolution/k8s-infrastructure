@@ -2,12 +2,31 @@ keycloak:
   nameOverride: "keycloak"
   fullnameOverride: "keycloak"
   namespaceOverride: "keycloak"
+  production: true
+  proxy: reencrypt
 
   ingress:
     enabled: true
     ingressClassName: "traefik"
+    annotations:
+      cert-manager.io/cluster-issuer: "cert-manager"
+      kubernetes.io/ingress.class: "traefik"
     hostname: auth.green-ecolution.de
-    tls: true
+    tls: false
+    extraTls:
+      - hosts:
+          - auth.green-ecolution.de
+        secretName: keycloak-green-ecolution-de-tls
+
+  tls:
+    enabled: true
+    usePem: true
+    existingSecret: keycloak-green-ecolution-de-tls
 
   postgresql:
     enabled: false
+
+  externalDatabase:
+    host: "postgresql.postgres.svc.cluster.local"
+    port: 5432
+    database: "keycloak"

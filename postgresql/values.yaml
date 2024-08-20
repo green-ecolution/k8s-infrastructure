@@ -1,9 +1,12 @@
 postgresql:
   fullnameOverride: postgresql
+  volumePermissions: 
+    enabled: true
   primary:
     persistence:
       enabled: true
       size: 5Gi
+      storageClass: "do-block-storage"
 
 pgadmin:
   fullnameOverride: pgadmin
