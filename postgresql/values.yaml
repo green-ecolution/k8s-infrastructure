@@ -3,6 +3,8 @@ postgresql:
   volumePermissions: 
     enabled: true
   primary:
+    pgHbaConfiguration: |-
+      host all all 0.0.0.0/0 trust
     persistence:
       enabled: true
       size: 5Gi
