@@ -2,6 +2,8 @@ keycloak:
   nameOverride: "keycloak"
   fullnameOverride: "keycloak"
   namespaceOverride: "keycloak"
+  production: false
+  proxyHeaders: "xforwarded"
 
   ingress:
     enabled: true
@@ -11,13 +13,28 @@ keycloak:
       kubernetes.io/ingress.class: "traefik"
     hostname: auth.green-ecolution.de
     tls: false
-    servicePort: https
+    servicePort: http
     extraTls:
       - hosts:
           - auth.green-ecolution.de
         secretName: keycloak-green-ecolution-de-tls
 
+  extraEnvVars:
+    - name: DEBUG
+      value: "false"
+    - name: DEBUG_PORT
+      value: "localhost:5005"
+    - name: KC_FEATURES
+      value: admin-fine-grained-authz
+    - name: DISABLE_EXTERNAL_ACCESS
+      value: "true"
+
   tls:
+    enabled: false
+    usePem: true
+    existingSecret: keycloak-green-ecolution-de-tls
+
+  networkPolicy:
     enabled: false
 
   postgresql:
