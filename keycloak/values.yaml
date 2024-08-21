@@ -2,8 +2,6 @@ keycloak:
   nameOverride: "keycloak"
   fullnameOverride: "keycloak"
   namespaceOverride: "keycloak"
-  production: true
-  proxy: reencrypt
 
   ingress:
     enabled: true
@@ -13,15 +11,14 @@ keycloak:
       kubernetes.io/ingress.class: "traefik"
     hostname: auth.green-ecolution.de
     tls: false
+    servicePort: https
     extraTls:
       - hosts:
           - auth.green-ecolution.de
         secretName: keycloak-green-ecolution-de-tls
 
   tls:
-    enabled: true
-    usePem: true
-    existingSecret: keycloak-green-ecolution-de-tls
+    enabled: false
 
   postgresql:
     enabled: false
