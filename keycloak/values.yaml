@@ -5,6 +5,9 @@ keycloak:
   production: false
   proxyHeaders: "xforwarded"
 
+  volumes:
+      - /tmp/keycloak:/export
+
   ingress:
     enabled: true
     ingressClassName: "traefik"
