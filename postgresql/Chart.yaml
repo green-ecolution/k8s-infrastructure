@@ -9,11 +9,11 @@ appVersion: "1.16.0"
 dependencies:
   - name: postgresql
     alias: postgresql
-    version: 15.5.*
+    version: 15.*.*
     repository: https://charts.bitnami.com/bitnami
 
   - name: pgadmin4
     alias: pgadmin
     condition: pgadmin.enabled
-    version: 1.28.*
+    version: 1.*.*
     repository: https://helm.runix.net
