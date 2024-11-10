@@ -5,6 +5,7 @@ minio:
   global:
     globalStorageClass: "do-block-storage" 
 
+
   ingress:
     enabled: true
     annotations:
