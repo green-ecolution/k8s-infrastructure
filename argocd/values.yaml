@@ -7,8 +7,19 @@ argocd:
     domain: argocd.green-ecolution.de
 
   configs:
+    cm:
+      statusbadge.enabled: true
+      oidc.config: |
+        name: Keycloak
+        issuer: https://auth.green-ecolution.de/realms/green-ecolution-dev
+        clientID: argocd
+        clientSecret: $oidc.keycloak.clientSecret
+        requestedScopes: ["profile", "email", "openid"]
     params:
       server.insecure: "true"
+    rbac:
+      policy.csv: |
+        g, ArgoCDAdmins, role:admin
 
   server:
     ingress:
