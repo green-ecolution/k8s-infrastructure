@@ -15,7 +15,7 @@ minio:
     tls: true
 
   apiIngress:
-    enabled: true
+    enabled: false
     annotations:
       cert-manager.io/cluster-issuer: cert-manager
       kubernetes.io/ingress.class: traefik
