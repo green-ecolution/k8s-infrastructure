@@ -1,0 +1,28 @@
+minio:
+  nameOverride: "minio"
+  fullnameOverride: "minio"
+  namespaceOverride: "minio"
+  global:
+    globalStorageClass: "do-block-storage" 
+
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: cert-manager
+      kubernetes.io/ingress.class: traefik
+    hostname: "minio.green-ecolution.de"
+    path: /
+    tls: true
+
+  apiIngress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: cert-manager
+      kubernetes.io/ingress.class: traefik
+    hostname: "minio.green-ecolution.de"
+    path: /api
+    tls: true
+
+  persistence:
+    enabled: true
+    size: 8Gi
