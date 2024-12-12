@@ -1,0 +1,66 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-fileupload
+  labels:
+    app: simple-fileupload
+spec:
+  selector:
+    matchLabels:
+      app: simple-fileupload
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: simple-fileupload
+      labels:
+        app: simple-fileupload
+    spec:
+      containers:
+        - name: simple-fileupload
+          image: simple-fileupload-image
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 1
+              memory: 100Mi
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 10
+          envFrom:
+            - secretRef:
+                name: basic-auth-secret
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: filestorage
+              mountPath: /data
+      volumes:
+        - name: filestorage
+          persistentVolumeClaim:
+            claimName: filestorage
+      restartPolicy: Always
+---

@@ -1,0 +1,23 @@
+# https://kubernetes.io/docs/concepts/services-networking/ingress/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simple-fileupload
+  annotations:
+    cert-manager.io/cluster-issuer: cert-manager
+spec:
+  rules:
+    - host: gpx-demo.dev.green-ecolution.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: simple-fileupload
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - gpx-demo.dev.green-ecolution.de
+      secretName: simple-fileupload-green-ecolution-de-tls
