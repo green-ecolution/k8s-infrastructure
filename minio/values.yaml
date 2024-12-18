@@ -16,12 +16,12 @@ minio:
     tls: true
 
   apiIngress:
-    enabled: false
+    enabled: true
     annotations:
       cert-manager.io/cluster-issuer: cert-manager
       kubernetes.io/ingress.class: traefik
-    hostname: "minio.green-ecolution.de"
-    path: /api
+    hostname: "s3.green-ecolution.de"
+    path: /
     tls: true
 
   persistence:
