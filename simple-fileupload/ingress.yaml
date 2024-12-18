@@ -7,6 +7,17 @@ metadata:
     cert-manager.io/cluster-issuer: cert-manager
 spec:
   rules:
+    - host: files.green-ecolution.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: simple-fileupload
+                port:
+                  number: 80
+
     - host: gpx-demo.dev.green-ecolution.de
       http:
         paths:
@@ -20,4 +31,5 @@ spec:
   tls:
     - hosts:
         - gpx-demo.dev.green-ecolution.de
+        - files.green-ecolution.de
       secretName: simple-fileupload-green-ecolution-de-tls
