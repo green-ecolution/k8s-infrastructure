@@ -1,0 +1,20 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ors-config
+data:
+  server.port: 8082
+  ors.engine.profile_default.build.source_file: /home/ors/files/sh.osm.pbf
+  ors.engine.profiles.driving-car.enabled: true
+  ors.endpoints.routing.gpx_name: ORSRouting
+  ors.endpoints.routing.gpx_description: "This is a directions instructions file as GPX, generated from openrouteservice"
+  ors.endpoints.routing.gpx_base_url: https://green-ecolution.de
+  ors.endpoints.routing.gpx_support_mail: dev@green-ecolution.de
+  ors.endpoints.routing.gpx_author: "Green Ecolution"
+  ors.endpoints.routing.gpx_content_licence: LGPL 3.0
+  REBUILD_GRAPHS: false
+  CONTAINER_LOG_LAVEL: INFO
+  XMS: 256m
+  XMX: 512m
+  ADDITIONAL_JAVA_OPTS: ""

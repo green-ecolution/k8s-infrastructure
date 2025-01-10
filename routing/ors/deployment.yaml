@@ -1,0 +1,82 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ors
+  labels:
+    app: ors
+spec:
+  selector:
+    matchLabels:
+      app: ors
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container:  ors
+      labels:
+        app: ors
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      initContainers:
+        - name: osm-file
+          image: busybox:1.37
+          command: ["sh", "-c", "mkdir -p /mnt/{config,elevation_cache,files,graphs,logs} && (test -f /mnt/files/sh.osm.pbf || wget https://download.geofabrik.de/europe/germany/schleswig-holstein-latest.osm.pbf -O /mnt/files/sh.osm.pbf)"]
+          volumeMounts:
+            - name: ors-volume
+              mountPath: /mnt
+      containers:
+      - name: ors
+        image: ors-image
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 512Mi
+        livenessProbe:
+          tcpSocket:
+            port: 8082
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ors/v2/health
+            port: 8082
+          initialDelaySeconds: 10
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 5
+          periodSeconds: 60
+        envFrom:
+            - configMapRef:
+                name: ors-config
+        volumeMounts:
+          - name: ors-volume
+            mountPath: /home/ors
+        ports:
+        - containerPort: 8082
+          name: http
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      volumes:
+        - name: ors-volume
+          persistentVolumeClaim: 
+            claimName: ors-pvc
+      restartPolicy: Always
+
