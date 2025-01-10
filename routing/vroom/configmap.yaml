@@ -25,26 +25,26 @@ data:
       ors:
         driving-car:
           host: 'ors/ors/v2'
-          port: '8082'
+          port: '80'
         driving-hgv:
           host: 'ors/ors/v2'
-          port: '8082'
+          port: '80'
         cycling-regular:
           host: 'ors/ors/v2'
-          port: '8082'
+          port: '80'
         cycling-mountain:
           host: 'ors/ors/v2'
-          port: '8082'
+          port: '80'
         cycling-road:
           host: 'ors/ors/v2'
-          port: '8082'
+          port: '80'
         cycling-electric:
           host: 'ors/ors/v2'
-          port: '8082'
+          port: '80'
         foot-walking:
           host: 'ors/ors/v2'
-          port: '8082'
+          port: '80'
         foot-hiking:
           host: 'ors/ors/v2'
-          port: '8082'
+          port: '80'
 
