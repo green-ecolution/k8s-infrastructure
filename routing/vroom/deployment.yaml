@@ -22,6 +22,7 @@ spec:
       labels:
         app: vroom
     spec:
+      nodeName: pool-stq4q7zon-e2d0l
       containers:
       - name: vroom
         image: vroom-image

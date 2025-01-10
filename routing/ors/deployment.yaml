@@ -22,6 +22,7 @@ spec:
       labels:
         app: ors
     spec:
+      nodeName: pool-stq4q7zon-e2d0l
       # initContainers:
         # Init containers are exactly like regular containers, except:
           # - Init containers always run to completion.
@@ -42,8 +43,8 @@ spec:
             cpu: 200m
             memory: 256Mi
           limits:
-            cpu: 700m
-            memory: 512Mi
+            cpu: 800m
+            memory: 1Gi
         livenessProbe:
           tcpSocket:
             port: 8082
@@ -68,7 +69,7 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 2
           successThreshold: 1
-          failureThreshold: 60
+          failureThreshold: 120
           periodSeconds: 5
         envFrom:
             - configMapRef:
