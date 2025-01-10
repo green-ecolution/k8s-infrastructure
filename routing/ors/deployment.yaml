@@ -29,7 +29,7 @@ spec:
       initContainers:
         - name: osm-file
           image: bitnami/os-shell
-          command: ["sh", "-c", "mkdir -p /mnt/{config,elevation_cache,files,graphs,logs} && (test -f /mnt/files/sh.osm.pbf || curl -fSL https://download.geofabrik.de/europe/germany/schleswig-holstein-latest.osm.pbf -o /mnt/files/sh.osm.pbf)"]
+          command: ["bash", "-c", "mkdir -p /mnt/{config,elevation_cache,files,graphs,logs} && (test -f /mnt/files/sh.osm.pbf || curl -fSL https://download.geofabrik.de/europe/germany/schleswig-holstein-latest.osm.pbf -o /mnt/files/sh.osm.pbf)"]
           volumeMounts:
             - name: ors-volume
               mountPath: /mnt
