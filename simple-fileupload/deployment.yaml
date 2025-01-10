@@ -31,7 +31,7 @@ spec:
               cpu: 100m
               memory: 100Mi
             limits:
-              cpu: 1
+              cpu: 100m
               memory: 100Mi
           livenessProbe:
             tcpSocket:

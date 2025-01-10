@@ -16,11 +16,11 @@ pgadmin:
 
   resources: 
     limits:
-      cpu: 200m
-      memory: 2Gi
+      cpu: 100m
+      memory: 128Mi
     requests:
-      cpu: 200m
-      memory: 1Gi
+      cpu: 100m
+      memory: 128Mi
 
   persistentVolume:
     enabled: true
