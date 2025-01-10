@@ -28,8 +28,8 @@ spec:
           # - Each init container must complete successfully before the next one starts.
       initContainers:
         - name: osm-file
-          image: busybox:1.37
-          command: ["sh", "-c", "mkdir -p /mnt/{config,elevation_cache,files,graphs,logs} && (test -f /mnt/files/sh.osm.pbf || wget https://download.geofabrik.de/europe/germany/schleswig-holstein-latest.osm.pbf -O /mnt/files/sh.osm.pbf)"]
+          image: bitnami/os-shell
+          command: ["sh", "-c", "mkdir -p /mnt/{config,elevation_cache,files,graphs,logs} && (test -f /mnt/files/sh.osm.pbf || curl -fSL https://download.geofabrik.de/europe/germany/schleswig-holstein-latest.osm.pbf -o /mnt/files/sh.osm.pbf)"]
           volumeMounts:
             - name: ors-volume
               mountPath: /mnt
