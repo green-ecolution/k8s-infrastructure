@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: helm
+    directories:
+      - "**/*"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 5
+    reviewers:
+      - "green-ecolution/devops"
+
