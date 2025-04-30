@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: helm
+    directories:
+      - "/argocd"
+      - "/cert-manager"
+      - "/external-dns"
+      - "/keycloak"
+      - "/minio"
+      - "/postgresql"
+      - "/routing"
+      - "/traefik-ingress"
+      - "/vaultwarden"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 5
+    reviewers:
+      - "green-ecolution/devops"
+
