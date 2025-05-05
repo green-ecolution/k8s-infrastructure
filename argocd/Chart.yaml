@@ -14,6 +14,6 @@ dependencies:
 
   - name: argo-cd
     alias: argocd
-    version: 7.x.x
+    version: 7.9.0
     repository: https://argoproj.github.io/argo-helm
     condition: argocd.enabled
