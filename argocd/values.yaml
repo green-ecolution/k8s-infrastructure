@@ -2,12 +2,15 @@ argocd:
   nameOverride: "argocd"
   fullnameOverride: "argocd"
 
+  crds:
+    install: true
+
   global:
-    installCRDs: true
     domain: argocd.green-ecolution.de
 
   configs:
     cm:
+      create: true
       statusbadge.enabled: true
       oidc.config: |
         name: Keycloak
