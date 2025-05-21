@@ -1,9 +1,9 @@
 dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
-  version: 2.27.0
+  version: 2.31.1
 - name: argo-cd
   repository: https://argoproj.github.io/argo-helm
-  version: 7.7.1
-digest: sha256:552936affdf52d0770c6e1d2ad0ed3e285eb6a30485bba0b6a1b3f39576ddc23
-generated: "2024-11-10T22:47:56.580892019+01:00"
+  version: 8.0.6
+digest: sha256:592d7e2a0a05c7db0a9c936ed8e562bb0d925636358af54e60f2fdad1596dcae
+generated: "2025-05-21T12:29:11.73268623Z"
