@@ -3,7 +3,7 @@ vaultwarden:
   domain: "https://vault.green-ecolution.de"
 
   image:
-    tag: "1.32.6"
+    tag: "1.34.1"
 
   ingress:
     enabled: true
