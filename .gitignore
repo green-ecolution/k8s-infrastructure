@@ -2,6 +2,7 @@ age.agekey
 
 **/secrets/**
 **/secret/**
+**/charts/**
 
 !**/secrets/*.enc.yaml
 !**/secrets/*.enc.yaml
