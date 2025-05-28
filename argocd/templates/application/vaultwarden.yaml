@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vaultwarden
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: vaultwarden
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - values.yaml
+      - secrets/values.enc.yaml
+    path: vaultwarden
+    repoURL: https://github.com/green-ecolution/k8s-infrastructure.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - RespectIgnoreDifferences=true
+    - CreateNamespace=true
+    - ApplyOutOfSyncOnly=true
+
