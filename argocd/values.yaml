@@ -130,3 +130,10 @@ argocd:
       - name: sops-age
         secret:
           secretName: sops-age
+
+  notifications:
+    notifiers:
+      service.github: |
+          appID: 1333636
+          installationID: 68697119
+          privateKey: $github-privateKey
