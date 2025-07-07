@@ -18,33 +18,36 @@ data:
       override: true # allow cli options override (-c, -g, -t and -x)
       path: '' # VROOM path (if not in $PATH)
       port: 3000 # expressjs port
-      router: 'ors' # routing backend (osrm, libosrm or ors)
+      router: 'valhalla' # routing backend (osrm, libosrm or ors)
       timeout: 300000 # milli-seconds
       baseurl: '/' #base url for api
     routingServers:
-      ors:
-        driving-car:
-          host: 'ors/ors/v2'
+      valhalla:
+        auto:
+          host: 'valhalla'
           port: '80'
-        driving-hgv:
-          host: 'ors/ors/v2'
+        bicycle:
+          host: 'valhalla'
           port: '80'
-        cycling-regular:
-          host: 'ors/ors/v2'
+        pedestrian:
+          host: 'valhalla'
           port: '80'
-        cycling-mountain:
-          host: 'ors/ors/v2'
+        motorcycle:
+          host: 'valhalla'
           port: '80'
-        cycling-road:
-          host: 'ors/ors/v2'
+        motor_scooter:
+          host: 'valhalla'
           port: '80'
-        cycling-electric:
-          host: 'ors/ors/v2'
+        taxi:
+          host: 'valhalla'
           port: '80'
-        foot-walking:
-          host: 'ors/ors/v2'
+        hov:
+          host: 'valhalla'
           port: '80'
-        foot-hiking:
-          host: 'ors/ors/v2'
+        truck:
+          host: 'valhalla'
+          port: '80'
+        bus:
+          host: 'valhalla'
           port: '80'
 
