@@ -30,6 +30,14 @@ minio:
   provisioning:
     enabled: true
     policies: 
+    - name: routes-gpx-dev
+      statements:
+      - resources:
+        - "arn:aws:s3:::routes-gpx-dev/*"
+        - "arn:aws:s3:::routes-gpx-dev/*"
+        effect: "Allow"
+        actions:
+        - "s3:*"
     - name: routes-gpx-prod
       statements:
       - resources:
@@ -55,6 +63,8 @@ minio:
         actions:
         - "s3:*"
     buckets: 
+      - name: routes-gpx-dev
+        region: us-east-1
       - name: routes-gpx-prod
         region: us-east-1
       - name: routes-gpx-stage
