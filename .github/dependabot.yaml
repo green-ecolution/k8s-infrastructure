@@ -4,12 +4,13 @@ updates:
     directories:
       - "/argocd"
       - "/cert-manager"
-      - "/external-dns"
       # - "/keycloak"
       # - "/minio"
       # - "/postgresql"
       - "/traefik-ingress"
       - "/vaultwarden"
+      - "/simple-fileupload"
+      - "/routing"
     schedule:
       interval: daily
     open-pull-requests-limit: 5
