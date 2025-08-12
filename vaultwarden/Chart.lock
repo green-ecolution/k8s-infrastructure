@@ -1,6 +1,6 @@
 dependencies:
 - name: vaultwarden
   repository: https://guerzon.github.io/vaultwarden
-  version: 0.32.3
-digest: sha256:9059c60b48cc61f63986e84d374b54894b36dc9c6217ffdb80e17623fb01c563
-generated: "2025-07-29T11:42:58.324460102Z"
+  version: 0.34.3
+digest: sha256:7bba53d73c4a414a11002275984eeacbbbb3c118956d6fd1121239381a071b99
+generated: "2025-08-12T12:02:02.67208317Z"
