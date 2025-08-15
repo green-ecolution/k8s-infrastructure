@@ -4,6 +4,6 @@ dependencies:
   version: 2.31.3
 - name: cert-manager
   repository: https://charts.bitnami.com/bitnami
-  version: 1.5.11
-digest: sha256:a38007fd503a325ed31127442cde9a0e67626253815374a583f731d745fd640f
-generated: "2025-07-25T12:46:16.099740478Z"
+  version: 1.5.14
+digest: sha256:e72ef8d4738457ea197ccc0563b2b1f9512a3b8e02fd33b872676028315b959f
+generated: "2025-08-15T11:24:13.740971379Z"
