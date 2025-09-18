@@ -2,6 +2,10 @@ minio:
   nameOverride: "minio"
   fullnameOverride: "minio"
   namespaceOverride: "minio"
+
+  image:
+    repository: bitnamilegacy/minio
+
   global:
     globalStorageClass: "do-block-storage" 
 
