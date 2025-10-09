@@ -1,35 +1,11 @@
+namespace: cert-manager
+
 cert-manager:
   enabled: true
   namespace: cert-manager
   fullnameOverride: cert-manager
-  installCRDs: true
-  webhook:
-    fullnameOverride: cert-manager
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 200m
-        memory: 256Mi
-
-  cainjector:
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 200m
-        memory: 256Mi
-
-  controller:
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 200m
-        memory: 256Mi
+  crds:
+    enabled: true
 
 clusterIssuer:
   enabled: true
