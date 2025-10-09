@@ -4,7 +4,7 @@ cert-manager:
   fullnameOverride: cert-manager
   installCRDs: true
   webhook:
-    fullnameOverride: cert-manager
+    # fullnameOverride: cert-manager
     resources:
       limits:
         cpu: 200m
