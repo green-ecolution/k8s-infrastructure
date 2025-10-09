@@ -1,9 +1,6 @@
 dependencies:
-- name: common
-  repository: https://charts.bitnami.com/bitnami
-  version: 2.31.3
 - name: cert-manager
   repository: https://charts.bitnami.com/bitnami
   version: 1.5.14
-digest: sha256:e72ef8d4738457ea197ccc0563b2b1f9512a3b8e02fd33b872676028315b959f
-generated: "2025-08-15T11:24:13.740971379Z"
+digest: sha256:12e52fbb0f4f2a9d4b4bb5cbbe24e740997f784b1589a2cc992b2c4c38122363
+generated: "2025-10-10T00:31:12.155057527+02:00"
