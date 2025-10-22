@@ -9,5 +9,5 @@ appVersion: "1.16.0"
 dependencies:
   - name: traefik
     repository: https://helm.traefik.io/traefik
-    version: 37.1.2
+    version: 37.2.0
     alias: traefik
