@@ -22,7 +22,6 @@ spec:
       labels:
         app: ors
     spec:
-      nodeName: pool-stq4q7zon-e2d0l
       # initContainers:
         # Init containers are exactly like regular containers, except:
           # - Init containers always run to completion.
