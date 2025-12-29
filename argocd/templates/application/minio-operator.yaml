@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: minio
+  name: minio-operator
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: minio
+    namespace: minio-operator
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: minio
+    path: minio-operator
     repoURL: https://github.com/green-ecolution/k8s-infrastructure.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:
     - Validate=false
+    - CreateNamespace=true
     - ServerSideApply=true
-

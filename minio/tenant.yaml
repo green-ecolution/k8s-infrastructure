@@ -1,0 +1,63 @@
+apiVersion: minio.min.io/v2
+kind: Tenant
+metadata:
+  name: minio
+  namespace: minio
+spec:
+  image: minio/minio:RELEASE.2024-12-18T13-15-44Z
+  imagePullPolicy: IfNotPresent
+
+  pools:
+    - name: pool-0
+      servers: 1
+      volumesPerServer: 1
+      volumeClaimTemplate:
+        metadata:
+          name: data
+        spec:
+          storageClassName: do-block-storage
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+
+  mountPath: /data
+
+  configuration:
+    name: minio-env-config
+
+  users:
+    - name: minio-user-credentials
+
+  requestAutoCert: false
+
+  features:
+    bucketDNS: false
+
+  exposeServices:
+    minio: true
+    console: true
+
+  env:
+    - name: MINIO_IDENTITY_OPENID_CLIENT_ID_KEYCLOAK_PRIMARY
+      valueFrom:
+        secretKeyRef:
+          name: minio-oidc-config
+          key: client-id
+    - name: MINIO_IDENTITY_OPENID_CLIENT_SECRET_KEYCLOAK_PRIMARY
+      valueFrom:
+        secretKeyRef:
+          name: minio-oidc-config
+          key: client-secret
+    - name: MINIO_IDENTITY_OPENID_CONFIG_URL_KEYCLOAK_PRIMARY
+      valueFrom:
+        secretKeyRef:
+          name: minio-oidc-config
+          key: config-url
+    - name: MINIO_IDENTITY_OPENID_SCOPES_KEYCLOAK_PRIMARY
+      value: "email profile openid"
+    - name: MINIO_IDENTITY_OPENID_REDIRECT_URI_DYNAMIC_KEYCLOAK_PRIMARY
+      value: "on"
+    - name: MINIO_IDENTITY_OPENID_DISPLAY_NAME_KEYCLOAK_PRIMARY
+      value: "Keycloak"

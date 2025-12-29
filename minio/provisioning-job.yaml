@@ -1,0 +1,127 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-provisioning
+  namespace: minio
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: mc
+          image: minio/mc:latest
+          envFrom:
+            - secretRef:
+                name: minio-provisioning-credentials
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+
+              # Wait for MinIO to be ready
+              until mc alias set minio http://minio-hl:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD; do
+                echo "Waiting for MinIO..."
+                sleep 5
+              done
+
+              echo "Creating buckets..."
+              mc mb --ignore-existing minio/routes-gpx-dev
+              mc mb --ignore-existing minio/routes-gpx-prod
+              mc mb --ignore-existing minio/routes-gpx-stage
+              mc mb --ignore-existing minio/routes-gpx-demo
+              mc mb --ignore-existing minio/streamlet-tiles-stage
+              mc mb --ignore-existing minio/public-videos
+
+              echo "Setting public-videos to public..."
+              mc anonymous set download minio/public-videos
+
+              echo "Creating policies..."
+              cat > /tmp/routes-gpx-dev-policy.json << 'EOF'
+              {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": ["s3:*"],
+                    "Resource": ["arn:aws:s3:::routes-gpx-dev/*"]
+                  }
+                ]
+              }
+              EOF
+              mc admin policy create minio routes-gpx-dev /tmp/routes-gpx-dev-policy.json || mc admin policy info minio routes-gpx-dev
+
+              cat > /tmp/routes-gpx-prod-policy.json << 'EOF'
+              {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": ["s3:*"],
+                    "Resource": ["arn:aws:s3:::routes-gpx-prod/*"]
+                  }
+                ]
+              }
+              EOF
+              mc admin policy create minio routes-gpx-prod /tmp/routes-gpx-prod-policy.json || mc admin policy info minio routes-gpx-prod
+
+              cat > /tmp/routes-gpx-stage-policy.json << 'EOF'
+              {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": ["s3:*"],
+                    "Resource": ["arn:aws:s3:::routes-gpx-stage/*"]
+                  }
+                ]
+              }
+              EOF
+              mc admin policy create minio routes-gpx-stage /tmp/routes-gpx-stage-policy.json || mc admin policy info minio routes-gpx-stage
+
+              cat > /tmp/routes-gpx-demo-policy.json << 'EOF'
+              {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": ["s3:*"],
+                    "Resource": ["arn:aws:s3:::routes-gpx-demo/*"]
+                  }
+                ]
+              }
+              EOF
+              mc admin policy create minio routes-gpx-demo /tmp/routes-gpx-demo-policy.json || mc admin policy info minio routes-gpx-demo
+
+              cat > /tmp/streamlet-tiles-stage-policy.json << 'EOF'
+              {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": ["s3:*"],
+                    "Resource": ["arn:aws:s3:::streamlet-tiles-stage/*"]
+                  }
+                ]
+              }
+              EOF
+              mc admin policy create minio streamlet-tiles-stage /tmp/streamlet-tiles-stage-policy.json || mc admin policy info minio streamlet-tiles-stage
+
+              echo "Creating users..."
+              mc admin user add minio routes-gpx-dev "$USER_ROUTES_GPX_DEV_PASSWORD" || true
+              mc admin policy attach minio routes-gpx-dev --user routes-gpx-dev || true
+
+              mc admin user add minio routes-gpx-prod "$USER_ROUTES_GPX_PROD_PASSWORD" || true
+              mc admin policy attach minio routes-gpx-prod --user routes-gpx-prod || true
+
+              mc admin user add minio routes-gpx-stage "$USER_ROUTES_GPX_STAGE_PASSWORD" || true
+              mc admin policy attach minio routes-gpx-stage --user routes-gpx-stage || true
+
+              mc admin user add minio routes-gpx-demo "$USER_ROUTES_GPX_DEMO_PASSWORD" || true
+              mc admin policy attach minio routes-gpx-demo --user routes-gpx-demo || true
+
+              mc admin user add minio streamlet-tiles-stage "$USER_STREAMLET_TILES_STAGE_PASSWORD" || true
+              mc admin policy attach minio streamlet-tiles-stage --user streamlet-tiles-stage || true
+
+              echo "Provisioning complete!"
