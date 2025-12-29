@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgres
+  name: pgadmin
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -11,10 +11,14 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: postgresql
+    helm:
+      valueFiles:
+      - secrets/values.enc.yaml
+      - values.yaml
+    path: pgadmin
     repoURL: https://github.com/green-ecolution/k8s-infrastructure.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:
     - Validate=false
-
+    - CreateNamespace=true

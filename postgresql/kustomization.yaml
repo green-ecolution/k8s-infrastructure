@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: postgres
+
+resources:
+  - namespace.yaml
+  - service.yaml
+  - statefulset.yaml
+
+generators:
+  - ./secret-generator.yaml
+
+images:
+  - name: postgres
+    newTag: "16"

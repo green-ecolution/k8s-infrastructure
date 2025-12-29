@@ -1,20 +1,7 @@
-postgresql:
-  fullnameOverride: postgresql
-  volumePermissions: 
-    enabled: true
-  primary:
-    pgHbaConfiguration: |-
-      host all all 0.0.0.0/0 trust
-    persistence:
-      enabled: true
-      size: 5Gi
-      storageClass: "do-block-storage"
-
 pgadmin:
   fullnameOverride: pgadmin
-  enabled: true
 
-  resources: 
+  resources:
     limits:
       cpu: 200m
       memory: 512M
@@ -26,6 +13,7 @@ pgadmin:
     enabled: true
     size: 5Gi
     storageClass: "do-block-storage"
+
   ingress:
     enabled: true
     annotations:
