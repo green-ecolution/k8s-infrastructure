@@ -27,9 +27,6 @@ spec:
   configuration:
     name: minio-env-config
 
-  users:
-    - name: minio-user-credentials
-
   requestAutoCert: false
 
   features:
