@@ -1,6 +1,13 @@
 pgadmin:
   fullnameOverride: pgadmin
 
+  startupProbe:
+    failureThreshold: 60
+    periodSeconds: 5
+
+  VolumePermissions:
+    enabled: true
+
   resources:
     limits:
       cpu: 200m
