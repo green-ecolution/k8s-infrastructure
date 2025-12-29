@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: keycloak
+  name: keycloak-operator
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -11,11 +11,11 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: keycloak
+    path: keycloak-operator
     repoURL: https://github.com/green-ecolution/k8s-infrastructure.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:
     - Validate=false
+    - CreateNamespace=true
     - ServerSideApply=true
-
