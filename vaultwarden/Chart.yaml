@@ -8,5 +8,5 @@ appVersion: "1.16.0"
 dependencies:
   - name: vaultwarden
     repository: https://guerzon.github.io/vaultwarden
-    version: 0.34.4
+    version: 0.42.0
     alias: vaultwarden
