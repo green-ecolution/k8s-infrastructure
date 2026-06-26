@@ -9,7 +9,7 @@ appVersion: "1.12.1"
 
 dependencies:
   - name: cert-manager
-    version: 1.19.2
+    version: 1.20.3
     repository: https://charts.jetstack.io
     alias: cert-manager
     condition: cert-manager.enabled
